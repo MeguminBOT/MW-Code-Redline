@@ -1,0 +1,16 @@
+unsigned char iNumPlayers;
+bool bComingFromBoot;
+bool bSavedProfileForMP;
+bool bProfileLoaded;
+bool bIsOptionsDirty;
+char pad_05[3];
+unsigned int iDefaultStableHash;
+signed char PlayerJoyports[2];
+char pad_0E[2];
+class UserProfile *CurrentUserProfile;
+class UserProfile *SecondUserProfile;
+int RaceMode;
+unsigned char unknown_1C[0x110];
+unsigned int FEGameMode;
+int LoadSaveGame;
+class cOnlineSettings OnlineSettings;

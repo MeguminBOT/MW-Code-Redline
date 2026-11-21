@@ -1,0 +1,12 @@
+class eViewPlatInfo *PlatInfo;
+int ID;
+char Active;
+char LetterBox;
+char pad0;
+char pad1;
+float H;
+int unknown_10[12];
+class Camera *pCamera;
+int unknown_44[7];
+struct eRenderTarget *RenderTarget;
+int unknown_64[3];

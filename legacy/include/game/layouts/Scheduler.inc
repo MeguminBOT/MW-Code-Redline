@@ -1,0 +1,10 @@
+class Schedule *mFrameSchedule;
+class Schedule *mStepSchedules[3];
+void *mStepScheduleList;
+int mLastTime;
+float mTotalTime;
+float mStepFraction;
+float mTimestep;
+bool mSingleStep;
+bool unknown_25;
+unsigned int mStepCount;

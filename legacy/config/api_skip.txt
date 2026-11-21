@@ -1,0 +1,23 @@
+# Original symbols that legacy/include/game/gen/api.h leaves out because a hand-written header declares them correctly.
+# Arrays mangle like pointers, so the generated declaration would read the first element as an address.
+?bASinTable@@3PAUASinTableEntry@@A          # legacy/include/game/bWare/bMath.h
+?sLoaderTable@bChunkLoader@@0PAPAV1@A       # array of 64
+?sNumLoaders@bChunkLoader@@0PAEA            # array of 64
+# Platform globals with Win32/Direct3D types: legacy/include/game/platform/Platform.h declares them with the SDK types.
+?g_hWnd@@3PAUHWND__@@A
+?g_PresentParameters@@3U_D3DPRESENT_PARAMETERS_@@A
+?g_D3D@@3PAUIDirect3D9@@A
+?g_D3DDevice@@3PAUIDirect3DDevice9@@A
+?g_DeviceCaps@@3U_D3DCAPS9@@A
+?g_WindowRect@@3UtagRECT@@A
+?g_ClientRect@@3UtagRECT@@A
+?g_BackBufferFormat@@3W4_D3DFORMAT@@A
+?g_RefreshRates@@3PAHA
+?g_Effects@@3PAPAVeEffect@@A                # legacy/include/game/platform/Effect.h (array of 31)
+?g_RearViewMirrorTexture@@3PAUIDirect3DTexture9@@A
+?eViews@@3PAVeView@@A                       # legacy/include/game/platform/Platform.h (array)
+?g_UnusedSurface@@3PAUIDirect3DSurface9@@A
+?g_BackBufferSurface@@3PAUIDirect3DSurface9@@A
+?g_DepthStencilSurface@@3PAUIDirect3DSurface9@@A
+?g_ScreenCopySurfaces@@3PAPAUIDirect3DSurface9@@A   # legacy/include/game/platform/Platform.h (array of 2)
+?g_ScreenCopyTextures@@3PAPAUIDirect3DTexture9@@A   # legacy/include/game/platform/Platform.h (array of 2)

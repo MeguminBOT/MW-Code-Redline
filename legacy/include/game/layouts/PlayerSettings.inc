@@ -1,0 +1,13 @@
+bool GaugesOn;
+bool PositionOn;
+bool LapInfoOn;
+bool ScoreOn;
+bool Rumble;
+bool LeaderboardOn;
+bool TransmissionPromptOn;
+bool DriveWithAnalog;
+int Config;
+int CurCam;
+unsigned char SplitTimeType;
+unsigned char Transmission;
+unsigned char Handling;

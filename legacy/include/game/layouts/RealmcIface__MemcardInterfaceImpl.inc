@@ -1,0 +1,14 @@
+int unknown_00[4];
+void *mIGame;
+void *mIMemcard;
+class RealmcIface::TaskManager *mTaskManager;
+unsigned char unknown_1C[0x4E];
+bool mAutosaveEnabled;
+unsigned char unknown_6B;
+int mActiveTask;
+int mActiveSubtask;
+enum RealmcIface::MessageChoices mUserChoice;
+bool mMessageShowing;
+unsigned char unknown_79[3];
+unsigned int mHiddenMessages;
+unsigned int mForceMessages;

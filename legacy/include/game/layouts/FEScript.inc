@@ -1,0 +1,13 @@
+void *VTable;
+class FEScript *Next;
+class FEScript *Prev;
+int Length;
+int CurrentTime;
+unsigned int Flags;
+class FEScript *pChainTo;
+unsigned int TrackCount;
+class FEKeyTrack *pTracks;
+unsigned int EventCount;
+void *pEvents;
+char *pName;
+unsigned int ID;

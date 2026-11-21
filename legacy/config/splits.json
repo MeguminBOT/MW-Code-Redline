@@ -1,0 +1,478 @@
+{
+  "unassigned_imports.obj": {
+    "functions": [],
+    "function_ranges": [],
+    "rdata": [["0x890000", "0x8904E4"]],
+    "data": [],
+    "bss": []
+  },
+  "Speed/Indep/SourceLists/zAI.obj": {
+    "functions": [],
+    "function_ranges": [["0x401000", "0x445230"]],
+    "rdata": [["0x8904E4", "0x8933E8"]],
+    "data": [["0x8EA000", "0x8EC078"]],
+    "bss": [["0x90D71C", "0x90D9B0"]]
+  },
+  "Speed/Indep/SourceLists/zAnim.obj": {
+    "functions": [],
+    "function_ranges": [["0x445230", "0x451488"]],
+    "rdata": [["0x8933E8", "0x893C40"]],
+    "data": [["0x8EC078", "0x8EC4E0"]],
+    "bss": [["0x90D9B0", "0x90DCA8"]]
+  },
+  "Speed/Indep/SourceLists/zAttribSys.obj": {
+    "functions": [],
+    "function_ranges": [["0x451488", "0x45C929"]],
+    "rdata": [["0x893C40", "0x893D58"]],
+    "data": [],
+    "bss": [["0x90DCA8", "0x90DCF0"]]
+  },
+  "Speed/Indep/SourceLists/zBWare.obj": {
+    "functions": [],
+    "function_ranges": [["0x45C929", "0x4664A0"]],
+    "rdata": [["0x893D58", "0x8945E8"]],
+    "data": [["0x8EC4E0", "0x8EDE54"]],
+    "bss": [["0x90DCF0", "0x911020"]]
+  },
+  "Speed/Indep/SourceLists/zCamera.obj": {
+    "functions": [],
+    "function_ranges": [["0x4664A0", "0x489FFA"]],
+    "rdata": [["0x8945E8", "0x895478"]],
+    "data": [["0x8EDE54", "0x8EE4D0"]],
+    "bss": [["0x911020", "0x91132C"]]
+  },
+  "Speed/Indep/SourceLists/zDebug.obj": {
+    "functions": [],
+    "function_ranges": [["0x489FFA", "0x48A000"]],
+    "rdata": [],
+    "data": [],
+    "bss": []
+  },
+  "Speed/Indep/SourceLists/zDynamics.obj": {
+    "functions": [],
+    "function_ranges": [["0x48A000", "0x48E106"]],
+    "rdata": [],
+    "data": [],
+    "bss": [["0x91132C", "0x9117DC"]]
+  },
+  "Speed/Indep/SourceLists/zEagl4Anim.obj": {
+    "functions": [],
+    "function_ranges": [["0x48E106", "0x49A51E"]],
+    "rdata": [["0x895478", "0x8963EC"]],
+    "data": [["0x8EE4D0", "0x8EE558"]],
+    "bss": [["0x9117DC", "0x911E98"]]
+  },
+  "Speed/Indep/SourceLists/zEAXSound.obj": {
+    "functions": [],
+    "function_ranges": [["0x49A51E", "0x4D3715"]],
+    "rdata": [["0x8963EC", "0x89793C"]],
+    "data": [["0x8EE558", "0x8EF998"]],
+    "bss": [["0x911E98", "0x913F30"]]
+  },
+  "Speed/Indep/SourceLists/zEAXSound2.obj": {
+    "functions": [],
+    "function_ranges": [["0x4D3715", "0x4FA130"]],
+    "rdata": [["0x89793C", "0x89A644"]],
+    "data": [["0x8EF998", "0x8F2154"]],
+    "bss": [["0x913F30", "0x914B60"]]
+  },
+  "Speed/Indep/SourceLists/zEcstasy.obj": {
+    "functions": [],
+    "function_ranges": [["0x4FA130", "0x50D5D0"]],
+    "rdata": [],
+    "data": [["0x8F2154", "0x8F3214"]],
+    "bss": [["0x914B60", "0x91C270"]]
+  },
+  "Speed/Indep/SourceLists/zFe.obj": {
+    "functions": [],
+    "function_ranges": [["0x50D5D0", "0x564850"]],
+    "rdata": [["0x89A644", "0x89CD54"]],
+    "data": [["0x8F3214", "0x8F459C"]],
+    "bss": [["0x91C270", "0x91DFE4"]]
+  },
+  "Speed/Indep/SourceLists/zFe2.obj": {
+    "functions": [],
+    "function_ranges": [["0x564850", "0x5AE68C"]],
+    "rdata": [["0x89CD54", "0x89F464"]],
+    "data": [["0x8F459C", "0x8F5A58"]],
+    "bss": []
+  },
+  "Speed/Indep/SourceLists/zFEng.obj": {
+    "functions": [],
+    "function_ranges": [["0x5AE68C", "0x5C5DBF"]],
+    "rdata": [["0x89F464", "0x8A37E4"]],
+    "data": [],
+    "bss": []
+  },
+  "Speed/Indep/SourceLists/zFoundation.obj": {
+    "functions": [],
+    "function_ranges": [["0x5C5DBF", "0x5D84CC"]],
+    "rdata": [],
+    "data": [],
+    "bss": []
+  },
+  "Speed/Indep/SourceLists/zGameModes.obj": {
+    "functions": [],
+    "function_ranges": [["0x5D84CC", "0x5D865D"]],
+    "rdata": [],
+    "data": [],
+    "bss": []
+  },
+  "Speed/Indep/SourceLists/zGameplay.obj": {
+    "functions": [],
+    "function_ranges": [["0x5D865D", "0x60408D"]],
+    "rdata": [["0x8A37E4", "0x8A3EC8"]],
+    "data": [["0x8F5A58", "0x8F66D4"]],
+    "bss": [["0x91DFE4", "0x91E0C8"]]
+  },
+  "Speed/Indep/SourceLists/zLua.obj": {
+    "functions": [],
+    "function_ranges": [["0x60408D", "0x61FB39"]],
+    "rdata": [["0x8A3EC8", "0x8A481C"]],
+    "data": [],
+    "bss": [["0x91E0C8", "0x91F418"]]
+  },
+  "Speed/Indep/SourceLists/zMain.obj": {
+    "functions": [],
+    "function_ranges": [["0x61FB39", "0x649651"]],
+    "rdata": [["0x8A481C", "0x8A85D8"]],
+    "data": [["0x8F66D4", "0x8F7DD8"]],
+    "bss": [["0x91F418", "0x925680"]]
+  },
+  "Speed/Indep/SourceLists/zMisc.obj": {
+    "functions": [],
+    "function_ranges": [["0x649651", "0x667003"]],
+    "rdata": [["0x8A85D8", "0x8A9270"]],
+    "data": [["0x8F7DD8", "0x8F868C"]],
+    "bss": [["0x925680", "0x926064"]]
+  },
+  "Speed/Indep/SourceLists/zMiscSmall.obj": {
+    "functions": [],
+    "function_ranges": [["0x667003", "0x66724A"]],
+    "rdata": [],
+    "data": [["0x8F868C", "0x8F8930"]],
+    "bss": [["0x926064", "0x926168"]]
+  },
+  "Speed/Indep/SourceLists/zMission.obj": {
+    "functions": [],
+    "function_ranges": [["0x66724A", "0x667338"]],
+    "rdata": [],
+    "data": [],
+    "bss": []
+  },
+  "Speed/Indep/SourceLists/zPhysics.obj": {
+    "functions": [],
+    "function_ranges": [["0x667338", "0x689561"]],
+    "rdata": [["0x8A9270", "0x8AABD4"]],
+    "data": [["0x8F8930", "0x8F89D0"]],
+    "bss": [["0x926168", "0x935A48"]]
+  },
+  "Speed/Indep/SourceLists/zPhysicsBehaviors.obj": {
+    "functions": [],
+    "function_ranges": [["0x689561", "0x6BE9DC"]],
+    "rdata": [["0x8AABD4", "0x8B0228"]],
+    "data": [["0x8F89D0", "0x8F8FF0"]],
+    "bss": [["0x935A48", "0x93CAD0"]]
+  },
+  "Speed/Indep/SourceLists/zPlatform.obj": {
+    "functions": [],
+    "function_ranges": [["0x6BE9DC", "0x6C8841"]],
+    "rdata": [],
+    "data": [["0x8F8FF0", "0x901AE0"]],
+    "bss": [["0x93CAD0", "0x93E864"]]
+  },
+  "Speed/Indep/SourceLists/zSim.obj": {
+    "functions": [],
+    "function_ranges": [["0x6C8841", "0x6FD6B0"]],
+    "rdata": [["0x8B0228", "0x8B0E60"]],
+    "data": [["0x901AE0", "0x901BC0"]],
+    "bss": []
+  },
+  "Speed/Indep/SourceLists/zSpeech.obj": {
+    "functions": [],
+    "function_ranges": [["0x6FD6B0", "0x721CC0"]],
+    "rdata": [["0x8B0E60", "0x8B43DC"]],
+    "data": [["0x901BC0", "0x902124"]],
+    "bss": []
+  },
+  "Speed/Indep/SourceLists/zTrack.obj": {
+    "functions": [],
+    "function_ranges": [["0x721CC0", "0x7329AB"]],
+    "rdata": [],
+    "data": [["0x902124", "0x903290"]],
+    "bss": []
+  },
+  "Speed/Indep/SourceLists/zWorld.obj": {
+    "functions": [],
+    "function_ranges": [["0x7329AB", "0x7616FB"]],
+    "rdata": [["0x8B43DC", "0x8B6AEC"]],
+    "data": [["0x903290", "0x905CE8"]],
+    "bss": [["0x93E864", "0x987C44"]]
+  },
+  "Speed/Indep/SourceLists/zWorld2.obj": {
+    "functions": [],
+    "function_ranges": [["0x7616FB", "0x789D88"]],
+    "rdata": [["0x8B6AEC", "0x8B91FC"]],
+    "data": [["0x905CE8", "0x905D2C"]],
+    "bss": []
+  },
+  "unassigned_gap_28.obj": {
+    "functions": [],
+    "function_ranges": [["0x789D88", "0x789EC0"]],
+    "rdata": [],
+    "data": [],
+    "bss": []
+  },
+  "unassigned_data.obj": {
+    "functions": [],
+    "function_ranges": [],
+    "rdata": [],
+    "data": [["0x905D2C", "0x90D71C"]],
+    "bss": []
+  },
+  "unassigned_00.obj": {
+    "functions": [],
+    "function_ranges": [["0x789EC0", "0x793910"]],
+    "rdata": [["0x8B91FC", "0x8BAC0D"]],
+    "data": [],
+    "bss": []
+  },
+  "unassigned_01.obj": {
+    "functions": [],
+    "function_ranges": [["0x793910", "0x79C3D0"]],
+    "rdata": [["0x8BAC0D", "0x8BC61E"]],
+    "data": [],
+    "bss": []
+  },
+  "unassigned_02.obj": {
+    "functions": [],
+    "function_ranges": [["0x79C3D0", "0x7A4110"]],
+    "rdata": [["0x8BC61E", "0x8BE02F"]],
+    "data": [],
+    "bss": []
+  },
+  "unassigned_03.obj": {
+    "functions": [],
+    "function_ranges": [["0x7A4110", "0x7ABB1A"]],
+    "rdata": [["0x8BE02F", "0x8BFA40"]],
+    "data": [],
+    "bss": []
+  },
+  "unassigned_gap_32.obj": {
+    "functions": [],
+    "function_ranges": [["0x7ABB1A", "0x7ABB60"]],
+    "rdata": [],
+    "data": [],
+    "bss": []
+  },
+  "unassigned_04.obj": {
+    "functions": [],
+    "function_ranges": [["0x7ABB60", "0x7B2A80"]],
+    "rdata": [["0x8BFA40", "0x8C1452"]],
+    "data": [],
+    "bss": []
+  },
+  "unassigned_05.obj": {
+    "functions": [],
+    "function_ranges": [["0x7B2A80", "0x7B9740"]],
+    "rdata": [["0x8C1452", "0x8C2E63"]],
+    "data": [],
+    "bss": []
+  },
+  "unassigned_06.obj": {
+    "functions": [],
+    "function_ranges": [["0x7B9740", "0x7BFFF0"]],
+    "rdata": [["0x8C2E63", "0x8C4874"]],
+    "data": [],
+    "bss": []
+  },
+  "unassigned_07.obj": {
+    "functions": [],
+    "function_ranges": [["0x7BFFF0", "0x7C6C80"]],
+    "rdata": [["0x8C4874", "0x8C6285"]],
+    "data": [],
+    "bss": []
+  },
+  "unassigned_08.obj": {
+    "functions": [],
+    "function_ranges": [["0x7C6C80", "0x7CD9A0"]],
+    "rdata": [["0x8C6285", "0x8C7C96"]],
+    "data": [],
+    "bss": []
+  },
+  "unassigned_09.obj": {
+    "functions": [],
+    "function_ranges": [["0x7CD9A0", "0x7D47D0"]],
+    "rdata": [["0x8C7C96", "0x8C96A8"]],
+    "data": [],
+    "bss": []
+  },
+  "unassigned_10.obj": {
+    "functions": [],
+    "function_ranges": [["0x7D47D0", "0x7DB5B0"]],
+    "rdata": [["0x8C96A8", "0x8CB0B9"]],
+    "data": [],
+    "bss": []
+  },
+  "unassigned_11.obj": {
+    "functions": [],
+    "function_ranges": [["0x7DB5B0", "0x7E20F0"]],
+    "rdata": [["0x8CB0B9", "0x8CCACA"]],
+    "data": [],
+    "bss": []
+  },
+  "unassigned_12.obj": {
+    "functions": [],
+    "function_ranges": [["0x7E20F0", "0x7EAB48"]],
+    "rdata": [["0x8CCACA", "0x8CE4DB"]],
+    "data": [],
+    "bss": []
+  },
+  "unassigned_gap_41.obj": {
+    "functions": [],
+    "function_ranges": [["0x7EAB48", "0x7EABB0"]],
+    "rdata": [],
+    "data": [],
+    "bss": []
+  },
+  "unassigned_13.obj": {
+    "functions": [],
+    "function_ranges": [["0x7EABB0", "0x7F364C"]],
+    "rdata": [["0x8CE4DB", "0x8CFEEC"]],
+    "data": [],
+    "bss": []
+  },
+  "unassigned_14.obj": {
+    "functions": [],
+    "function_ranges": [["0x7F364C", "0x7FB0F9"]],
+    "rdata": [["0x8CFEEC", "0x8D18FE"]],
+    "data": [],
+    "bss": []
+  },
+  "unassigned_15.obj": {
+    "functions": [],
+    "function_ranges": [["0x7FB0F9", "0x8026AA"]],
+    "rdata": [["0x8D18FE", "0x8D330F"]],
+    "data": [],
+    "bss": []
+  },
+  "unassigned_16.obj": {
+    "functions": [],
+    "function_ranges": [["0x8026AA", "0x80A1E5"]],
+    "rdata": [["0x8D330F", "0x8D4D20"]],
+    "data": [],
+    "bss": []
+  },
+  "unassigned_17.obj": {
+    "functions": [],
+    "function_ranges": [["0x80A1E5", "0x810107"]],
+    "rdata": [["0x8D4D20", "0x8D6731"]],
+    "data": [],
+    "bss": []
+  },
+  "unassigned_18.obj": {
+    "functions": [],
+    "function_ranges": [["0x810107", "0x81712F"]],
+    "rdata": [["0x8D6731", "0x8D8142"]],
+    "data": [],
+    "bss": []
+  },
+  "unassigned_19.obj": {
+    "functions": [],
+    "function_ranges": [["0x81712F", "0x81E639"]],
+    "rdata": [["0x8D8142", "0x8D9B54"]],
+    "data": [],
+    "bss": []
+  },
+  "unassigned_20.obj": {
+    "functions": [],
+    "function_ranges": [["0x81E639", "0x825069"]],
+    "rdata": [["0x8D9B54", "0x8DB565"]],
+    "data": [],
+    "bss": []
+  },
+  "unassigned_21.obj": {
+    "functions": [],
+    "function_ranges": [["0x825069", "0x82C880"]],
+    "rdata": [["0x8DB565", "0x8DCF76"]],
+    "data": [],
+    "bss": []
+  },
+  "unassigned_22.obj": {
+    "functions": [],
+    "function_ranges": [["0x82C880", "0x834314"]],
+    "rdata": [["0x8DCF76", "0x8DE987"]],
+    "data": [],
+    "bss": [["0x987C44", "0x999ECE"]]
+  },
+  "unassigned_23.obj": {
+    "functions": [],
+    "function_ranges": [["0x834314", "0x83CE9C"]],
+    "rdata": [["0x8DE987", "0x8E0398"]],
+    "data": [["0x999ECE", "0x9A05D5"]],
+    "bss": []
+  },
+  "unassigned_gap_52.obj": {
+    "functions": [],
+    "function_ranges": [["0x83CE9C", "0x83CF00"]],
+    "rdata": [],
+    "data": [],
+    "bss": []
+  },
+  "unassigned_24.obj": {
+    "functions": [],
+    "function_ranges": [["0x83CF00", "0x844710"]],
+    "rdata": [["0x8E0398", "0x8E1DAA"]],
+    "data": [["0x9A05D5", "0x9A6CDC"]],
+    "bss": []
+  },
+  "unassigned_25.obj": {
+    "functions": [],
+    "function_ranges": [["0x844710", "0x84B770"]],
+    "rdata": [["0x8E1DAA", "0x8E37BB"]],
+    "data": [["0x9A6CDC", "0x9AD3E3"]],
+    "bss": []
+  },
+  "unassigned_26.obj": {
+    "functions": [],
+    "function_ranges": [["0x84B770", "0x854320"]],
+    "rdata": [["0x8E37BB", "0x8E51CC"]],
+    "data": [["0x9AD3E3", "0x9B3AEA"]],
+    "bss": []
+  },
+  "unassigned_27.obj": {
+    "functions": [],
+    "function_ranges": [["0x854320", "0x85B3F8"]],
+    "rdata": [["0x8E51CC", "0x8E6BDD"]],
+    "data": [["0x9B3AEA", "0x9BA1F1"]],
+    "bss": []
+  },
+  "unassigned_gap_56.obj": {
+    "functions": [],
+    "function_ranges": [["0x85B3F8", "0x85B440"]],
+    "rdata": [],
+    "data": [],
+    "bss": []
+  },
+  "unassigned_28.obj": {
+    "functions": [],
+    "function_ranges": [["0x85B440", "0x8638A0"]],
+    "rdata": [["0x8E6BDD", "0x8E85EE"]],
+    "data": [["0x9BA1F1", "0x9C08F8"]],
+    "bss": []
+  },
+  "unassigned_29.obj": {
+    "functions": [],
+    "function_ranges": [["0x8638A0", "0x88F12A"]],
+    "rdata": [["0x8E85EE", "0x8EA000"]],
+    "data": [["0x9C08F8", "0x9C7000"]],
+    "bss": []
+  },
+  "unassigned_tail.obj": {
+    "functions": [],
+    "function_ranges": [["0x88F12A", "0x88F2A5"]],
+    "rdata": [],
+    "data": [],
+    "bss": []
+  }
+}

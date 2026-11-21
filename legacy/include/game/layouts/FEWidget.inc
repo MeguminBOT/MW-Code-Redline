@@ -1,0 +1,24 @@
+// complete
+virtual ~FEWidget();
+virtual void Act(const char *name, unsigned int action);
+virtual void CheckMouse(const char *name, float x, float y);
+virtual void Draw();
+virtual void Position();
+virtual void Show();
+virtual void Hide();
+virtual void Enable();
+virtual void Disable();
+virtual void SetFocus(const char *name);
+virtual void UnsetFocus();
+virtual void SetPos(bVector2 &pos);
+virtual void SetPosX(float x);
+virtual void SetPosY(float y);
+FEWidget *Next;
+FEWidget *Prev;
+bVector2 vTopLeft;
+bVector2 vSize;
+bVector2 vBackingOffset;
+class FEObject *pBacking;
+bool bEnabled;
+bool bHidden;
+bool bMovedLastUpdate;

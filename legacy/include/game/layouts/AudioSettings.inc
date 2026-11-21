@@ -1,0 +1,13 @@
+float MasterVol;
+float SpeechVol;
+float FEMusicVol;
+float IGMusicVol;
+float SoundEffectsVol;
+float EngineVol;
+float CarVol;
+float AmbientVol;
+float SpeedVol;
+int AudioMode;
+int InteractiveMusicMode;
+int EATraxMode;
+int PlayState;

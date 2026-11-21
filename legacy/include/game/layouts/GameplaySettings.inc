@@ -1,0 +1,13 @@
+bool AutoSaveOn;
+bool RearviewOn;
+bool Damage;
+unsigned char SpeedoUnits;
+unsigned char RacingMiniMapMode;
+unsigned char ExploringMiniMapMode;
+char pad_06[2];
+unsigned int MapItems;
+unsigned char LastMapZoom;
+unsigned char LastPursuitMapZoom;
+unsigned char LastMapView;
+bool JumpCam;
+float HighlightCam;
