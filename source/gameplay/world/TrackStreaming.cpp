@@ -13,11 +13,12 @@
  * The zones only want what can be seen from them, but shadows fall from what cannot: a building behind the camera or
  * round a corner lost its shadow on the road ahead when its section was unloaded, and cast one when it was loaded
  * again. Every section whose area comes within Streaming.KeepNearMetres (150) of the camera is wanted as well, so
- * the casters around the player only change far away. The pool grows by Streaming.ExtraPoolMegabytes (512, as much of
+ * the casters around the player only change far away. The pool grows by Streaming.ExtraPoolMegabytes (1024, as much of
  * it as fits below 2 GB: InitMemoryPool) for them and for the sections ahead (below): with the upscaled track textures
  * (STREAML2RA.BUN 507 MB to 773 MB) 128 MB more left the pool short at a jump across the city, hundreds of sections were
- * thrown out, and the game crashed (2026-11-14). While the streamer has had to throw sections out, nothing more is
- * wanted ahead.
+ * thrown out, and the game crashed (2026-11-14). 512 MB went short again when more upscales grew the always-loaded
+ * shared section Y0 from 601 MB to 654 MB: the sections at a race start did not load and the car fell through the road
+ * (2026-11-22), so 1024 for headroom. While the streamer has had to throw sections out, nothing more is wanted ahead.
  *
  * The streamer follows the camera (UpdateCameraMovers 0x47c880 gives it the player camera's position each frame), so a
  * camera on the far side of a wall from the car (looking back with the far camera, nose against a wall) can switch the
@@ -398,7 +399,7 @@ void Note(const char *what, const TrackStreamingSection *section)
  */
 void TrackStreamer::InitMemoryPool(int bytes)
 {
-    const int wanted = nfs::config::Int("Streaming", "ExtraPoolMegabytes", 512);
+    const int wanted = nfs::config::Int("Streaming", "ExtraPoolMegabytes", 1024);
     const SIZE_T total = static_cast<SIZE_T>(bytes) + static_cast<SIZE_T>(wanted) * kMegabyte;
     void *memory = VirtualAlloc(nullptr, total, MEM_RESERVE | MEM_COMMIT | MEM_TOP_DOWN, PAGE_READWRITE);
     if (memory && reinterpret_cast<uintptr_t>(memory) < 0x80000000u)

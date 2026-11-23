@@ -76,7 +76,6 @@ enum BlockFlags
     kSpeedrunner = 32,
 };
 
-typedef void(__thiscall *QueueSwitch)(cFEng *, const char *, int, unsigned int, bool);
 
 bool StartsWith(const char *text, const char *prefix)
 {
@@ -169,6 +168,8 @@ void LogSettings(const char *what, const char *profile, const nfs::profileoption
 } // namespace
 
 /** cFEng (zFe). */
+void cFEngQueuePackageSwitch(cFEng *c, char const *name, int arg, unsigned int pads, bool noPause);
+
 struct PackageSwitch
 {
     void Queue(const char *package, int a, unsigned int b, bool c);
@@ -209,7 +210,7 @@ void PackageSwitch::Queue(const char *package, int a, unsigned int b, bool c)
         lstrcpynA(g_state.returnTo, package, sizeof(g_state.returnTo));
         Options().CurrentCategory = nfs::profileoptions::kCategory;
         nfs::Log("profile options: %s's page in place of %s", g_state.profile, package);
-        NFS_ORIGINAL(0x525940, QueueSwitch)(self, kOptionsPackage, a, b, c);
+        cFEngQueuePackageSwitch(self, kOptionsPackage, a, b, c);
         return;
     }
     if (package && g_state.open && Options().CurrentCategory == nfs::profileoptions::kCategory &&
@@ -225,7 +226,7 @@ void PackageSwitch::Queue(const char *package, int a, unsigned int b, bool c)
             nfs::testprofile::StartHeldCareer();
             return;
         }
-        NFS_ORIGINAL(0x525940, QueueSwitch)(self, g_state.returnTo, a, b, c);
+        cFEngQueuePackageSwitch(self, g_state.returnTo, a, b, c);
         return;
     }
     // Leaving an options page (back to the options menu, the online menu or the pause menu): its audio and gameplay
@@ -233,7 +234,7 @@ void PackageSwitch::Queue(const char *package, int a, unsigned int b, bool c)
     if (package && (_stricmp(package, kOptionsMenuPackage) == 0 || _stricmp(package, "Pause_Main.fng") == 0 ||
                     _stricmp(package, "OL_MAIN.fng") == 0))
         nfs::prefs::StoreFromProfile(FEDatabase->CurrentUserProfile);
-    NFS_ORIGINAL(0x525940, QueueSwitch)(self, package, a, b, c);
+    cFEngQueuePackageSwitch(self, package, a, b, c);
 }
 
 namespace nfs::profileoptions

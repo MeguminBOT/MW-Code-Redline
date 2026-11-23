@@ -11,6 +11,9 @@
  * are mounted after data\'s, and a file or resource both serve comes from the mod's. Nothing of a mod is in data\,
  * so deleting mods\ takes every mod out. -set Data.Mods=0 leaves them unmounted, and so does a pack of mods\compiled\
  * made from another pack of data\ than the one there (ModsMatchData).
+ *
+ * -set Data.WorldFolder=PATH mounts the world's packs from PATH (laid out as data\world: rockport\*.pack,
+ * minimap.pack) instead of data\world, to try world packs without installing them (tools/gametest/world_check.py).
  */
 #include <windows.h>
 
@@ -388,6 +391,25 @@ void Mount()
     nfs::config::String("Data", "Folder", kDefaultFolder, root, sizeof(root));
     lstrcpynA(folder, root, MAX_PATH);
     Collect(folder, found, count, kMaxPacks);
+    char world[MAX_PATH];
+    nfs::config::String("Data", "WorldFolder", "", world, sizeof(world));
+    if (world[0])
+    {
+        char prefix[MAX_PATH];
+        wsprintfA(prefix, "%s\\world\\", folder);
+        const int length = lstrlenA(prefix);
+        int kept = 0;
+        for (int i = 0; i < count; ++i)
+            if (_strnicmp(found[i], prefix, length))
+            {
+                if (kept != i)
+                    lstrcpynA(found[kept], found[i], MAX_PATH);
+                ++kept;
+            }
+        count = kept;
+        Collect(world, found, count, kMaxPacks);
+        nfs::Log("packs: the world's packs from %s (%d) instead of %s\\world", world, count - kept, folder);
+    }
     const int base = count;
     // mods\ beside the data folder.
     char mods[MAX_PATH];

@@ -14,6 +14,7 @@
 #include "legacy/link.h"
 #include "core/config.h"
 #include "core/log.h"
+#include "engine/resources/pack.h"
 
 namespace
 {
@@ -34,13 +35,7 @@ const Malloc kMalloc = reinterpret_cast<Malloc>(0x652ac0);
 using Free = void(__cdecl *)(void *);
 const Free kFree = reinterpret_cast<Free>(0x652b10);
 const Construct kPackageConstruct = reinterpret_cast<Construct>(0x5bc240);
-const WithText kNodeSetName = reinterpret_cast<WithText>(0x5b59c0);
-const WithText kSetFilename = reinterpret_cast<WithText>(0x5b1480);
 const Find kCreateObject = reinterpret_cast<Find>(0x5bee70);
-const Find kFindByGuid = reinterpret_cast<Find>(0x5b85a0);
-const WithWord kSetLabelHash = reinterpret_cast<WithWord>(0x50d8b0);
-const WithWord kWideSetLength = reinterpret_cast<WithWord>(0x5b91c0);
-const WithPointer kWideAssign = reinterpret_cast<WithPointer>(0x5bcd20);
 void *const kScriptPool = reinterpret_cast<void *>(0x91dd0c);
 const Alloc kScriptAlloc = reinterpret_cast<Alloc>(0x5c1c40);
 const Construct kScriptConstruct = reinterpret_cast<Construct>(0x5b3d60);
@@ -55,17 +50,10 @@ const unsigned int kResponseVtable = 0x8a2c28;
 const WithWord kResponseSetCount = reinterpret_cast<WithWord>(0x5bb370);
 const WithText kResponseSetParam = reinterpret_cast<WithText>(0x5b6df0);
 const WithPointer kListAddTail = reinterpret_cast<WithPointer>(0x50d700);
-const WithPointer kAddResponse = reinterpret_cast<WithPointer>(0x5b3da0);
 const WithPointer kAddObject = reinterpret_cast<WithPointer>(0x50db90);
-const WithPointer kGroupAddObject = reinterpret_cast<WithPointer>(0x5b5420);
-const Construct kSetupMoveToTracks = reinterpret_cast<Construct>(0x5b7c30);
 const WithWord kTargetsAllocate = reinterpret_cast<WithWord>(0x5b6f20);
-using KeyInterp = void(__cdecl *)(void *, unsigned int, int, void *);
-const KeyInterp kKeyInterp = reinterpret_cast<KeyInterp>(0x5c07b0);
 using Shutdown = void(__thiscall *)(void *, void *);
 const Shutdown kShutdown = reinterpret_cast<Shutdown>(0x5b14d0);
-using Startup = bool(__thiscall *)(void *, void *);
-const Startup kStartup = reinterpret_cast<Startup>(0x5bc4d0);
 using Original = FEPackage *(__thiscall *)(FEngine *, const void *, bool);
 
 const unsigned int kInitScript = 0x1744b3;
@@ -165,7 +153,7 @@ bool ReadResponses(Load &l, void *owner, bool package)
         At<unsigned int>(response, 0x10) = 0;
         At<unsigned int>(response, 0x14) = 0;
         if (package)
-            kAddResponse(owner, response);
+            static_cast<FEPackage *>(owner)->AddResponse(static_cast<FEMessageResponse *>(response));
         else
             kListAddTail(static_cast<char *>(owner) + 0x34, response);
         kResponseSetCount(response, count);
@@ -341,7 +329,7 @@ bool ReadObject(Load &l)
     {
         const unsigned int parentGuid = l.in.Word();
         if (!l.parentCache || At<unsigned int>(l.parentCache, 0xc) != parentGuid)
-            l.parentCache = kFindByGuid(l.package, parentGuid);
+            l.parentCache = reinterpret_cast<FEPackage *>(l.package)->FindObjectByGUID(parentGuid);
         parent = l.parentCache;
     }
     if (bits & kImageFlags)
@@ -355,13 +343,13 @@ bool ReadObject(Load &l)
         const unsigned int s = l.in.Word();
         void *wide = object + 0x64;
         if (s & 1)
-            kWideSetLength(wide, l.in.Word());
+            static_cast<FEWideString *>(wide)->SetLength(l.in.Word());
         if (s & 2)
         {
             const unsigned int chars = l.in.Word();
             const unsigned char *text = l.in.Bytes((chars * 2 + 3) & ~3u);
             if (text && chars && type == kStringType)
-                kWideAssign(wide, const_cast<unsigned char *>(text));
+                *static_cast<FEWideString *>(wide) = reinterpret_cast<const short *>(text);
         }
         if (s & 4)
             At<unsigned int>(object, 0x6c) = l.in.Word();
@@ -370,7 +358,7 @@ bool ReadObject(Load &l)
         if (s & 16)
             At<unsigned int>(object, 0x74) = l.in.Word();
         if (s & 32)
-            kSetLabelHash(object, l.in.Word());
+            reinterpret_cast<FEString *>(object)->SetLabelHash(l.in.Word());
     }
     if (bits & kMulti)
     {
@@ -410,14 +398,15 @@ bool ReadObject(Load &l)
     At<char *>(object, 0x54) = init;
     if (init)
     {
-        kSetupMoveToTracks(object);
+        reinterpret_cast<FEObject *>(object)->SetupMoveToTracks();
         At<unsigned int>(init, 0x10) = 0;
         if (!l.skipInit)
             for (unsigned int t = 0; t < At<unsigned int>(init, 0x1c); ++t)
-                kKeyInterp(init, t & 0xff, 0, object);
+                FEKeyInterp(reinterpret_cast<FEScript *>(init), static_cast<unsigned char>(t), 0,
+                            reinterpret_cast<FEObject *>(object));
     }
     if (parent)
-        kGroupAddObject(parent, object);
+        static_cast<FEGroup *>(parent)->AddObject(reinterpret_cast<FEObject *>(object));
     else
         kAddObject(l.package, object);
     return true;
@@ -441,8 +430,8 @@ void *LoadNative(const unsigned char *data, unsigned int size, void *gameInterfa
         return nullptr;
     l.package = kPackageConstruct(memory);
     At<unsigned int>(l.package, 0x8c) = 0;
-    kNodeSetName(l.package, name);
-    kSetFilename(l.package, file);
+    reinterpret_cast<FENode *>(l.package)->SetName(name);
+    reinterpret_cast<FEPackage *>(l.package)->SetFilename(file);
     At<unsigned int>(&l.state, 0x30) = types;
     At<const unsigned char *>(&l.state, 0x34) = typeSizes;
     At<void *>(&l.state, 0x38) = gameInterface;
@@ -504,7 +493,7 @@ void *LoadNative(const unsigned char *data, unsigned int size, void *gameInterfa
             kTargetsAllocate(list, targets);
             for (unsigned int t = 0; t < targets && l.in.ok; ++t)
             {
-                void *target = kFindByGuid(l.package, l.in.Word());
+                void *target = reinterpret_cast<FEPackage *>(l.package)->FindObjectByGUID(l.in.Word());
                 if (list[2] == list[1])
                     kTargetsAllocate(list, list[1] + 1);
                 reinterpret_cast<void **>(list[3])[list[2]++] = target;
@@ -515,7 +504,7 @@ void *LoadNative(const unsigned char *data, unsigned int size, void *gameInterfa
     if (ok)
     {
         At<bool>(l.package, 0x16) = skipInit;
-        ok = kStartup(l.package, gameInterface);
+        ok = reinterpret_cast<FEPackage *>(l.package)->Startup(static_cast<FEGameInterface *>(gameInterface));
     }
     if (!ok)
     {
@@ -778,4 +767,114 @@ FEPackage *FEngine::LoadPackage(void const *data, bool skipInit)
             nfs::Log("fe check: EA's package does not load");
     }
     return static_cast<FEPackage *>(package);
+}
+
+namespace
+{
+/** A bundle's package chunk that names a package of the packs (tools/assetc/fepackage.py named_placeholder): the chunk
+ * made for it, which the package manager keeps until the bundle lets the placeholder go. */
+struct Served
+{
+    const void *placeholder;
+    unsigned int *chunk;
+};
+const int kMaxServed = 512;
+Served g_served[kMaxServed];
+
+unsigned int HashUpper(const char *s)
+{
+    unsigned int h = 0xffffffffu;
+    for (; *s; ++s)
+    {
+        const unsigned char c = static_cast<unsigned char>(*s);
+        h = h * 33 + (c >= 'a' && c <= 'z' ? c - 32 : c);
+    }
+    return h;
+}
+
+/** The packed-package chunk (0x30210: name hash, then a stored RAWW stream) for a placeholder, or null. */
+unsigned int *MakeServedChunk(const unsigned int *placeholder)
+{
+    const char *payload = reinterpret_cast<const char *>(placeholder + 2);
+    const unsigned int size = placeholder[1];
+    if (size < 8 || memcmp(payload, "FEPN", 4))
+        return nullptr;
+    const char *group = payload + 4;
+    size_t groupLength = 0;
+    while (groupLength < size - 4 && group[groupLength])
+        ++groupLength;
+    if (4 + groupLength + 1 >= size)
+        return nullptr;
+    const char *name = group + groupLength + 1;
+    char path[160] = "FRONTEND\\PACKAGES\\";
+    size_t at = strlen(path);
+    for (size_t i = 0; i < groupLength && at < sizeof(path) - 2; ++i)
+        path[at++] = static_cast<char>(group[i] >= 'a' && group[i] <= 'z' ? group[i] - 32 : group[i]);
+    path[at++] = '\\';
+    path[at] = 0;
+    strncat(path, name, sizeof(path) - at - 1);
+    uint32_t length = 0;
+    uint8_t *data = nfs::pack::ReadWhole(path, length);
+    if (!data)
+    {
+        nfs::Log("fe: no package %s in the packs", path);
+        return nullptr;
+    }
+    unsigned int *chunk = static_cast<unsigned int *>(::operator new(12 + 16 + length));
+    chunk[0] = 0x30210;
+    chunk[1] = 4 + 16 + length;
+    chunk[2] = HashUpper(name);
+    memcpy(chunk + 3, "RAWW", 4);
+    reinterpret_cast<unsigned char *>(chunk + 4)[0] = 1;
+    reinterpret_cast<unsigned char *>(chunk + 4)[1] = 0x10;
+    reinterpret_cast<unsigned char *>(chunk + 4)[2] = 0;
+    reinterpret_cast<unsigned char *>(chunk + 4)[3] = 0;
+    chunk[5] = length;
+    chunk[6] = length + 16;
+    memcpy(chunk + 7, data, length);
+    ::operator delete(data);
+    return chunk;
+}
+} // namespace
+
+NFS_REPLACE(0x585aa0, LoaderFEngPackage)
+NFS_REPLACE(0x585ae0, UnloaderFEngPackage)
+
+/** A bundle's package chunk (original 0x585aa0): a placeholder gets its package from the packs, made into the chunk the
+ * package manager takes. */
+int __cdecl LoaderFEngPackage(bChunk *chunkObject)
+{
+    using Loader = int(__cdecl *)(bChunk *);
+    const unsigned int *chunk = reinterpret_cast<const unsigned int *>(chunkObject);
+    if (chunk[0] == 0x30210)
+        if (unsigned int *made = MakeServedChunk(chunk))
+        {
+            for (Served &s : g_served)
+                if (!s.placeholder)
+                {
+                    s.placeholder = chunk;
+                    s.chunk = made;
+                    return NFS_ORIGINAL(0x585aa0, Loader)(reinterpret_cast<bChunk *>(made));
+                }
+            nfs::Log("fe: more than %d packages served at once", kMaxServed);
+            ::operator delete(made);
+            return 1;
+        }
+    return NFS_ORIGINAL(0x585aa0, Loader)(chunkObject);
+}
+
+/** Its unloader (original 0x585ae0): a placeholder's chunk goes with it. */
+int __cdecl UnloaderFEngPackage(bChunk *chunkObject)
+{
+    using Unloader = int(__cdecl *)(bChunk *);
+    for (Served &s : g_served)
+        if (s.placeholder == chunkObject)
+        {
+            const int result = NFS_ORIGINAL(0x585ae0, Unloader)(reinterpret_cast<bChunk *>(s.chunk));
+            ::operator delete(s.chunk);
+            s.placeholder = nullptr;
+            s.chunk = nullptr;
+            return result;
+        }
+    return NFS_ORIGINAL(0x585ae0, Unloader)(chunkObject);
 }

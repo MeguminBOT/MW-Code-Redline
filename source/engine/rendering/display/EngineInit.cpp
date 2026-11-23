@@ -28,6 +28,7 @@
 #include "engine/rendering/x360/shader.h"
 #include "core/log.h"
 #include "gameplay/world/timeofday.h"
+#include "dev/coverage.h"
 #include "dev/sampler.h"
 #include "engine/rendering/display/video.h"
 #include "engine/rendering/vulkan/d3dx_effect.h"
@@ -269,6 +270,7 @@ NFS_REPLACE(0x500a80, eShutdownEngine)
 extern "C" int eInitEnginePlat()
 {
     nfs::sampler::Start();
+    nfs::coverage::Start();
     // eInitEngine's last call: nothing has taken from its frame buffers yet.
     if (!s_originalFrameMemory[0])
     {

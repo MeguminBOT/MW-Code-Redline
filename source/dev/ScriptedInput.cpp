@@ -114,6 +114,8 @@ Click g_clicks[kMaxClicks];
 int g_clickCount = -1;
 int g_nextClick;
 char *const kMouse = reinterpret_cast<char *>(0x987f50);
+volatile LONG g_clickAsked;
+volatile int g_askedX, g_askedY;
 
 void LoadClicks()
 {
@@ -167,9 +169,17 @@ void Mouse()
         held = nullptr;
         return;
     }
-    if (g_nextClick >= g_clickCount || now < g_clicks[g_nextClick].at)
+    static Click asked;
+    if (InterlockedExchange(&g_clickAsked, 0))
+    {
+        asked.x = g_askedX;
+        asked.y = g_askedY;
+        held = &asked;
+    }
+    else if (g_nextClick >= g_clickCount || now < g_clicks[g_nextClick].at)
         return;
-    held = &g_clicks[g_nextClick++];
+    else
+        held = &g_clicks[g_nextClick++];
     release = now + kPressSeconds;
     *reinterpret_cast<int *>(kMouse + 4) = held->x;
     *reinterpret_cast<int *>(kMouse + 8) = held->y;
@@ -179,10 +189,25 @@ void Mouse()
     nfs::Log("fescript: click %d %d", held->x, held->y);
 }
 
+void ClickAt(int x, int y)
+{
+    if (g_count < 0)
+        Load();
+    g_askedX = x;
+    g_askedY = y;
+    InterlockedExchange(&g_clickAsked, 1);
+}
+
 bool Press(const char *button)
 {
     if (g_count < 0)
         Load();
+    if (!lstrcmpiA(button, "pause"))
+    {
+        nfs::Log("fescript: pause (test channel)");
+        reinterpret_cast<void(__cdecl *)()>(0x6050f0)();
+        return true;
+    }
     for (int b = 0; b < kButtonCount; ++b)
     {
         if (lstrcmpiA(button, kButtons[b]))

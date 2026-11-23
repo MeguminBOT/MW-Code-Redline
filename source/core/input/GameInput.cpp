@@ -179,6 +179,12 @@ const void *g_systemObject = kSystemVtable;
 /** DirectInput's key codes (the PC keyboard's scan codes, 0x80 for E0 prefixed keys) as SDL's (USB's) scan codes. */
 SDL_Scancode g_scancodeOfKey[256];
 bool g_keyDown[256], g_keyWasDown[256];
+/** Test channel presses (key, virtual pad button): polls left to hold each. */
+int g_injectedKey[256];
+SDL_JoystickID g_virtualPad;
+SDL_Joystick *g_virtualPadJoystick;
+int g_virtualButton = -1, g_virtualButtonPolls;
+bool g_rescanNow;
 
 void MapKeys()
 {
@@ -242,6 +248,16 @@ void ReadKeyboard()
     {
         const SDL_Scancode s = g_scancodeOfKey[key];
         g_keyDown[key] = state && s != SDL_SCANCODE_UNKNOWN && s < count && state[s];
+        if (g_injectedKey[key] > 0)
+        {
+            g_keyDown[key] = true;
+            --g_injectedKey[key];
+        }
+    }
+    if (g_virtualButton >= 0 && --g_virtualButtonPolls <= 0)
+    {
+        SDL_SetJoystickVirtualButton(g_virtualPadJoystick, g_virtualButton, false);
+        g_virtualButton = -1;
     }
 }
 
@@ -414,6 +430,13 @@ void ScanControllers()
     g_controllerCount = 0;
     int count = 0;
     SDL_JoystickID *ids = SDL_GetJoysticks(&count);
+    // The test channel's virtual pad first, so it is the one the bindings name.
+    for (int i = 1; ids && g_virtualPad && i < count; ++i)
+        if (ids[i] == g_virtualPad)
+        {
+            ids[i] = ids[0];
+            ids[0] = g_virtualPad;
+        }
     for (int i = 0; ids && i < count && g_controllerCount < kMaxControllerRecords; ++i)
         if (Open(g_controllers[g_controllerCount], ids[i]))
             ++g_controllerCount;
@@ -474,9 +497,10 @@ void Update()
         else
             lost = true;
     }
-    if (lost || (--g_rescanCountdown <= 0 && !g_controllerCount))
+    if (lost || g_rescanNow || (--g_rescanCountdown <= 0 && !g_controllerCount))
     {
         g_rescanCountdown = 120;
+        g_rescanNow = false;
         if (lost)
             nfs::Log("input: a game controller was unplugged");
         ScanControllers();
@@ -986,7 +1010,8 @@ void __fastcall GameDevicePoll(void *self, void *)
         lastActive = *g_gameActive;
         nfs::Log("input: game active %d", lastActive);
     }
-    if (device->port || !*g_gameActive)
+    static const bool always = nfs::config::Int("Debug", "InputAlways", 0) != 0;
+    if (device->port || (!*g_gameActive && !always))
         return;
     if (device->capturing)
     {
@@ -1050,4 +1075,44 @@ int __fastcall WheelEnumerate(char *manager, void *)
 void __fastcall WheelStart(char *manager, void *)
 {
     WheelEnumerate(manager, nullptr);
+}
+
+void nfs::input::InjectKey(int key, int polls)
+{
+    if (key >= 0 && key < 256)
+        g_injectedKey[key] = polls;
+}
+
+bool nfs::input::AttachVirtualPad()
+{
+    if (g_virtualPad)
+        return true;
+    SDL_VirtualJoystickDesc desc;
+    SDL_INIT_INTERFACE(&desc);
+    desc.type = SDL_JOYSTICK_TYPE_GAMEPAD;
+    desc.naxes = SDL_GAMEPAD_AXIS_COUNT;
+    desc.nbuttons = SDL_GAMEPAD_BUTTON_COUNT;
+    desc.name = "Test Pad";
+    g_virtualPad = SDL_AttachVirtualJoystick(&desc);
+    if (!g_virtualPad)
+    {
+        nfs::Log("input: no virtual pad (%s)", SDL_GetError());
+        return false;
+    }
+    g_virtualPadJoystick = SDL_OpenJoystick(g_virtualPad);
+    nfs::Log("input: virtual test pad attached (%u)", static_cast<unsigned int>(g_virtualPad));
+    g_rescanNow = true;
+    return g_virtualPadJoystick != nullptr;
+}
+
+bool nfs::input::PressVirtualPad(int button, int polls)
+{
+    if (!g_virtualPadJoystick || button < 0 || button >= SDL_GAMEPAD_BUTTON_COUNT)
+        return false;
+    if (g_virtualButton >= 0)
+        SDL_SetJoystickVirtualButton(g_virtualPadJoystick, g_virtualButton, false);
+    SDL_SetJoystickVirtualButton(g_virtualPadJoystick, button, true);
+    g_virtualButton = button;
+    g_virtualButtonPolls = polls;
+    return true;
 }

@@ -12,7 +12,12 @@
  *   menu [PACKAGE]       an icon-scroller screen's options (their names) and the chosen one; for other screens, the
  *                        object the pads are on
  *   press BUTTON         a front-end button, as a pad press (up, down, left, right, accept, back, start, button0-5,
- *                        ltrigger, rtrigger)
+ *                        ltrigger, rtrigger); pause opens the pause menu in a race, as the pause key does
+ *   key NAME             a keyboard key through the game's own input (up, down, left, right, enter, escape, space,
+ *                        1, 2, backspace), held 6 polls; needs -set Debug.InputAlways=1 when the window is not active
+ *   vpad                 a virtual SDL gamepad attached, read as a real controller
+ *   pad NAME             the virtual pad's button (a, b, x, y, back, start, lb, rb, dpup, dpdown, dpleft, dpright),
+ *                        6 polls
  *   zone NAME            a career shop zone from free roam (safehouse, carlot, customshop)
  *   shot NAME            the next frame saved as NAME.bmp beside the exe (Vulkan)
  *   car                  the car the car select shows, the one the customization shop works on, the player's in a
@@ -33,6 +38,7 @@
 
 #include "game/gen/api.h"
 #include "core/config.h"
+#include "core/input.h"
 #include "core/log.h"
 #include "dev/fescript.h"
 #include "dev/pose.h"
@@ -546,6 +552,36 @@ void Cars()
         Raw("null");
 }
 
+/** A keyboard key through the game's own input (its SDL key state), held a few polls. */
+bool PressKey(const char *name)
+{
+    static const struct
+    {
+        const char *name;
+        int key;
+    } kKeys[] = {{"up", 200}, {"down", 208}, {"left", 203}, {"right", 205}, {"enter", 28},
+                 {"escape", 1}, {"space", 57},  {"1", 2},      {"2", 3},      {"backspace", 14}};
+    for (const auto &k : kKeys)
+        if (!lstrcmpiA(name, k.name))
+        {
+            nfs::input::InjectKey(k.key, 6);
+            return true;
+        }
+    return false;
+}
+
+/** A virtual gamepad's button (SDL's names: a, b, x, y, back, start, dpup, dpdown, dpleft, dpright). */
+bool PressPad(const char *name)
+{
+    // SDL_GamepadButton's numbers.
+    static const char *const kButtons[] = {"a",  "b",  "x",  "y",      "back",     "guide", "start", "ls",
+                                           "rs", "lb", "rb", "dpup", "dpdown", "dpleft", "dpright"};
+    for (int b = 0; b < static_cast<int>(sizeof(kButtons) / sizeof(kButtons[0])); ++b)
+        if (!lstrcmpiA(name, kButtons[b]))
+            return nfs::input::PressVirtualPad(b, 6);
+    return false;
+}
+
 void Answer(const char *request)
 {
     g_length = 0;
@@ -561,6 +597,22 @@ void Answer(const char *request)
         Cars();
     else if (Is(request, "press"))
         ok = nfs::fescript::Press(Argument(request));
+    else if (Is(request, "key"))
+        ok = PressKey(Argument(request));
+    else if (Is(request, "vpad"))
+        ok = nfs::input::AttachVirtualPad();
+    else if (Is(request, "pad"))
+        ok = PressPad(Argument(request));
+    else if (Is(request, "click"))
+    {
+        const char *a = Argument(request);
+        const int x = static_cast<int>(bStrToFloat(a));
+        while (*a && *a != ' ')
+            ++a;
+        while (*a == ' ')
+            ++a;
+        nfs::fescript::ClickAt(x, static_cast<int>(bStrToFloat(a)));
+    }
     else if (Is(request, "zone"))
         ok = nfs::fescript::Zone(Argument(request));
     else if (Is(request, "shot"))
